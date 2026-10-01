@@ -1,0 +1,86 @@
+/* Spezielle Regeln für den Ausdruck / PDF-Generierung (CSS Paged Media) */
+@page {
+    size: A4;
+    margin: 20mm 20mm 25mm 20mm;
+
+    @bottom-right {
+        content: "Seite " counter(page) " von " counter(pages);
+        font-family: Helvetica, Arial, sans-serif;
+        font-size: 9pt;
+        color: #777;
+    }
+}
+
+body {
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 10pt;
+    color: #333;
+    line-height: 1.4;
+}
+
+/*
+ * Hinweis: OpenHTMLtoPDF unterstützt CSS 2.1 + Teile von CSS3, aber kein Flexbox/Grid.
+ * Mehrspaltige Layouts daher mit Tabellen oder Floats bauen.
+ */
+.header {
+    width: 100%;
+    border-bottom: 2px solid #0056b3;
+    margin-bottom: 30px;
+}
+
+.header td {
+    vertical-align: top;
+    padding: 0 0 10px 0;
+}
+
+.right {
+    text-align: right;
+}
+
+.company-title {
+    font-size: 20pt;
+    font-weight: bold;
+    color: #0056b3;
+}
+
+h2 {
+    margin: 0;
+}
+
+.items {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.items th,
+.items td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.items th {
+    background-color: #f8f9fa;
+}
+
+.items .num {
+    text-align: right;
+}
+
+/* Tabellenkopf auf jeder Seite wiederholen (OpenHTMLtoPDF-Erweiterung, Browser ignorieren sie) */
+.items {
+    -fs-table-paginate: paginate;
+}
+
+/* Verhindert unschöne Seitenumbrüche mitten in einer Zeile */
+.items tr {
+    page-break-inside: avoid;
+}
+
+.total {
+    text-align: right;
+    font-size: 14pt;
+    font-weight: bold;
+    margin-top: 20px;
+}

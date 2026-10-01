@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.example</groupId>
+    <artifactId>thymeleaf-pdf</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <name>thymeleaf-pdf</name>
+    <description>Backend-PDF-Erzeugung mit Jakarta EE (CDI) + Thymeleaf + OpenHTMLtoPDF</description>
+
+    <properties>
+        <maven.compiler.release>21</maven.compiler.release>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <!-- Jakarta EE 10 (CDI 4.0) – passend zu WildFly 27+, Payara 6, Open Liberty -->
+        <jakarta.cdi-api.version>4.0.1</jakarta.cdi-api.version>
+
+        <thymeleaf.version>3.1.5.RELEASE</thymeleaf.version>
+        <openhtmltopdf.version>1.1.87</openhtmltopdf.version>
+        <jsoup.version>1.23.2</jsoup.version>
+
+        <junit.version>5.13.4</junit.version>
+        <weld-junit5.version>4.0.5.Final</weld-junit5.version>
+        <pdfbox.version>3.0.8</pdfbox.version>
+    </properties>
+
+    <dependencies>
+        <!-- Stellt der Application Server bereit -->
+        <dependency>
+            <groupId>jakarta.enterprise</groupId>
+            <artifactId>jakarta.enterprise.cdi-api</artifactId>
+            <version>${jakarta.cdi-api.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Template-Engine -->
+        <dependency>
+            <groupId>org.thymeleaf</groupId>
+            <artifactId>thymeleaf</artifactId>
+            <version>${thymeleaf.version}</version>
+        </dependency>
+
+        <!-- HTML/CSS -> PDF (gepflegter Fork von com.openhtmltopdf, basiert auf PDFBox 3) -->
+        <dependency>
+            <groupId>io.github.openhtmltopdf</groupId>
+            <artifactId>openhtmltopdf-pdfbox</artifactId>
+            <version>${openhtmltopdf.version}</version>
+        </dependency>
+
+        <!-- Parst das gerenderte HTML5 fehlertolerant in ein W3C-DOM für OpenHTMLtoPDF -->
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>${jsoup.version}</version>
+        </dependency>
+
+        <!-- Test: CDI-Container (Weld SE) in JUnit 5 -->
+        <dependency>
+            <groupId>org.jboss.weld</groupId>
+            <artifactId>weld-junit5</artifactId>
+            <version>${weld-junit5.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- Test: Text aus dem erzeugten PDF auslesen -->
+        <dependency>
+            <groupId>org.apache.pdfbox</groupId>
+            <artifactId>pdfbox</artifactId>
+            <version>${pdfbox.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.14.0</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.5.4</version>
+            </plugin>
+        </plugins>
+    </build>
+</project>

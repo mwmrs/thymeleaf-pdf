@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="de" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title th:text="'Rechnung ' + ${order.id}">Rechnung INV-2026-000</title>
+    <!-- Relativer Pfad: funktioniert im Browser (Datei direkt öffnen) UND im PDF-Renderer -->
+    <link rel="stylesheet" href="invoice.css"/>
+</head>
+<body>
+
+<!--
+    Natural Template: Im Browser sieht man die Beispielwerte,
+    Thymeleaf ersetzt sie zur Laufzeit über die th:*-Attribute.
+-->
+<table class="header">
+    <tr>
+        <td>
+            <div class="company-title">Acme GmbH</div>
+            <p>Musterstraße 123<br/>10115 Berlin</p>
+        </td>
+        <td class="right">
+            <h2>RECHNUNG</h2>
+            <p>
+                <strong>Nr.:</strong> <span th:text="${order.id}">INV-2026-000</span><br/>
+                <strong>Datum:</strong>
+                <span th:text="${#temporals.format(order.date, 'dd.MM.yyyy')}">01.10.2026</span>
+            </p>
+        </td>
+    </tr>
+</table>
+
+<p class="recipient">
+    <strong>Empfänger:</strong><br/>
+    <span th:text="${order.customerName}">Max Mustermann</span><br/>
+    <span th:text="${order.customerAddress}">Beispielweg 1, 12345 Musterstadt</span>
+</p>
+
+<table class="items">
+    <thead>
+    <tr>
+        <th>Beschreibung</th>
+        <th class="num">Menge</th>
+        <th class="num">Einzelpreis</th>
+        <th class="num">Gesamt</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="item : ${order.items}">
+        <td th:text="${item.description}">Beispielartikel</td>
+        <td class="num" th:text="${item.quantity}">1</td>
+        <td class="num" th:text="${#numbers.formatDecimal(item.price, 1, 'DEFAULT', 2, 'DEFAULT')} + ' €'">10,00 €</td>
+        <td class="num" th:text="${#numbers.formatDecimal(item.total, 1, 'DEFAULT', 2, 'DEFAULT')} + ' €'">10,00 €</td>
+    </tr>
+    <!-- Nur für die Browser-Vorschau, wird von Thymeleaf entfernt -->
+    <tr th:remove="all">
+        <td>Weiterer Beispielartikel</td>
+        <td class="num">2</td>
+        <td class="num">5,00 €</td>
+        <td class="num">10,00 €</td>
+    </tr>
+    </tbody>
+</table>
+
+<div class="total">
+    Gesamtsumme:
+    <span th:text="${#numbers.formatDecimal(order.total, 1, 'DEFAULT', 2, 'DEFAULT')} + ' €'">20,00 €</span>
+</div>
+
+</body>
+</html>
