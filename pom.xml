@@ -22,11 +22,43 @@
         <thymeleaf.version>3.1.5.RELEASE</thymeleaf.version>
         <openhtmltopdf.version>1.1.87</openhtmltopdf.version>
         <jsoup.version>1.23.2</jsoup.version>
+        <docx4j.version>17.0.4</docx4j.version>
+        <poi.version>5.5.1</poi.version>
 
         <junit.version>5.13.4</junit.version>
         <weld-junit5.version>4.0.5.Final</weld-junit5.version>
         <pdfbox.version>3.0.8</pdfbox.version>
     </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <!--
+                PDFBox kommt transitiv über OpenHTMLtoPDF und docx4j (Compile-Scope, wird zur Laufzeit
+                gebraucht). Hier nur die Version aller PDFBox-Module vereinheitlichen.
+                Die Tests nutzen PDFBox zusätzlich zum Auslesen der erzeugten PDFs.
+            -->
+            <dependency>
+                <groupId>org.apache.pdfbox</groupId>
+                <artifactId>pdfbox</artifactId>
+                <version>${pdfbox.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.pdfbox</groupId>
+                <artifactId>pdfbox-io</artifactId>
+                <version>${pdfbox.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.pdfbox</groupId>
+                <artifactId>fontbox</artifactId>
+                <version>${pdfbox.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.pdfbox</groupId>
+                <artifactId>xmpbox</artifactId>
+                <version>${pdfbox.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <dependencies>
         <!-- Stellt der Application Server bereit -->
@@ -58,6 +90,26 @@
             <version>${jsoup.version}</version>
         </dependency>
 
+        <!-- HTML -> DOCX: nutzt intern dieselbe OpenHTMLtoPDF-CSS-Engine -->
+        <dependency>
+            <groupId>org.docx4j</groupId>
+            <artifactId>docx4j-ImportXHTML-core</artifactId>
+            <version>${docx4j.version}</version>
+        </dependency>
+        <!-- JAXB-Implementierung für docx4j (Jakarta XML Binding 4) -->
+        <dependency>
+            <groupId>org.docx4j</groupId>
+            <artifactId>docx4j-JAXB-ReferenceImpl</artifactId>
+            <version>${docx4j.version}</version>
+        </dependency>
+
+        <!-- XLSX direkt aus den Daten -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>${poi.version}</version>
+        </dependency>
+
         <!-- Test: CDI-Container (Weld SE) in JUnit 5 -->
         <dependency>
             <groupId>org.jboss.weld</groupId>
@@ -69,13 +121,6 @@
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
             <version>${junit.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <!-- Test: Text aus dem erzeugten PDF auslesen -->
-        <dependency>
-            <groupId>org.apache.pdfbox</groupId>
-            <artifactId>pdfbox</artifactId>
-            <version>${pdfbox.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
