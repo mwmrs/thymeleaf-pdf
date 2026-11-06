@@ -12,6 +12,14 @@
     <name>thymeleaf-pdf</name>
     <description>Backend-PDF-Erzeugung mit Jakarta EE (CDI) + Thymeleaf + OpenHTMLtoPDF</description>
 
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>https://opensource.org/licenses/MIT</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
     <properties>
         <maven.compiler.release>21</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
