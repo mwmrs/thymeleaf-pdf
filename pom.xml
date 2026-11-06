@@ -12,6 +12,14 @@
     <name>thymeleaf-pdf</name>
     <description>Backend-PDF-Erzeugung mit Jakarta EE (CDI) + Thymeleaf + OpenHTMLtoPDF</description>
 
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>https://opensource.org/licenses/MIT</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
     <properties>
         <maven.compiler.release>21</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -32,6 +40,17 @@
 
     <dependencyManagement>
         <dependencies>
+            <!--
+                Alle JUnit-Module auf eine Version bringen: weld-junit5 bringt sonst eine ältere
+                junit-jupiter-api (5.10.x) mit, die per Dependency-Mediation gewinnen würde.
+            -->
+            <dependency>
+                <groupId>org.junit</groupId>
+                <artifactId>junit-bom</artifactId>
+                <version>${junit.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
             <!--
                 PDFBox kommt transitiv über OpenHTMLtoPDF und docx4j (Compile-Scope, wird zur Laufzeit
                 gebraucht). Hier nur die Version aller PDFBox-Module vereinheitlichen.
@@ -120,7 +139,6 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
-            <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

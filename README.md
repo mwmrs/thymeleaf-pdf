@@ -141,3 +141,37 @@ public class MonthlyInvoiceJob {
   Quarkus (ArC); die Templates bleiben gleich. Für Native Images ggf. Reflection-Registrierung
   der DTOs (`@RegisterForReflection`) – docx4j (JAXB) ist im Native Mode aufwendiger, JVM-Mode
   ist unproblematisch. Alternativ schrittweiser Wechsel auf Qute.
+
+## Lizenz
+
+Der Code dieses Repositories steht unter der [MIT-Lizenz](LICENSE).
+
+Die MIT-Lizenz gilt nur für den eigenen Code, nicht für die eingebundenen Bibliotheken. Diese
+werden nicht im Repository mitgeliefert, landen aber in einer daraus gebauten WAR
+(`WEB-INF/lib`) und behalten dort ihre eigenen Lizenzen:
+
+| Lizenz | Bibliotheken (Laufzeit) |
+|---|---|
+| **LGPL 2.1 (or later)** | OpenHTMLtoPDF (`openhtmltopdf-core`, `-pdfbox`), `docx4j-ImportXHTML-core` |
+| Apache 2.0 | Thymeleaf, Apache POI, PDFBox, docx4j-core, Commons, XmlBeans, Log4j-API, OGNL u. a. |
+| MIT | jsoup, SLF4J-API, Checker Qual, mbassador |
+| BSD / EDL 1.0 | ANTLR, StringTemplate, curvesapi, JAXB-Runtime, Jakarta XML Binding/Activation |
+| Apache 2.0 / LGPL 2.1 / MPL 1.1 (wählbar) | Javassist (über OGNL/Thymeleaf) |
+
+Die CDI-API (`provided`) und die Testbibliotheken (JUnit: EPL 2.0, Weld: Apache 2.0) werden nicht
+ausgeliefert.
+
+**LGPL-Komponenten:** Die Nutzung als unveränderte, separate JAR-Dateien ist mit der MIT-Lizenz
+und auch mit proprietären Anwendungen vereinbar. Bei der Weitergabe einer WAR an Dritte
+müssen die Lizenztexte beiliegen, und die LGPL-Bibliotheken müssen austauschbar bleiben
+(kein Umpacken in eine „Uber-JAR“ mit Shading/Relocation, keine Modifikation ohne Offenlegung
+der Änderungen). Wird die Anwendung nur intern oder als Webdienst betrieben, findet keine
+Weitergabe statt.
+
+Vollständige, aktuelle Übersicht aller transitiven Abhängigkeiten:
+
+```bash
+mvn org.codehaus.mojo:license-maven-plugin:2.4.0:add-third-party
+```
+
+(Ergebnis in `target/generated-sources/license/THIRD-PARTY.txt`.)
