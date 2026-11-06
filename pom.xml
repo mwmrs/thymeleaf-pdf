@@ -41,6 +41,17 @@
     <dependencyManagement>
         <dependencies>
             <!--
+                Alle JUnit-Module auf eine Version bringen: weld-junit5 bringt sonst eine ältere
+                junit-jupiter-api (5.10.x) mit, die per Dependency-Mediation gewinnen würde.
+            -->
+            <dependency>
+                <groupId>org.junit</groupId>
+                <artifactId>junit-bom</artifactId>
+                <version>${junit.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!--
                 PDFBox kommt transitiv über OpenHTMLtoPDF und docx4j (Compile-Scope, wird zur Laufzeit
                 gebraucht). Hier nur die Version aller PDFBox-Module vereinheitlichen.
                 Die Tests nutzen PDFBox zusätzlich zum Auslesen der erzeugten PDFs.
@@ -128,7 +139,6 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
-            <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
